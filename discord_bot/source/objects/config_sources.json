@@ -1,0 +1,9 @@
+{
+    "system_directories": ["error_dumps", "temp", "backup-db"],
+    "cron_tasks": "",
+    "on_ready_tasks": "./on_ready_tasks.js",
+    "presence_config": "./source/objects/presence-config.json",
+    "default_presence_presets": "./source/objects/default-presence-presets.json",
+    "error_dumps": "./error_dumps",
+    "event_hooks": ""
+}

@@ -1,0 +1,6 @@
+.env
+node_modules/
+temp/
+error_dumps/
+backup-db/
+dist/
