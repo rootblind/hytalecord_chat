@@ -22,6 +22,11 @@ public class Authenticate implements Filter {
         HttpServletRequest req = (HttpServletRequest) request;
         HttpServletResponse res = (HttpServletResponse) response;
 
+        if("/api/mockup/ping".equals(req.getRequestURI())) {
+            chain.doFilter(request, response);
+            return;
+        }
+
         String authHeader = req.getHeader("Authorization");
 
         if(authHeader == null || !authHeader.startsWith("Bearer ")) {

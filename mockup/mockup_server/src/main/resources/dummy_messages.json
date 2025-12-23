@@ -1,0 +1,26 @@
+{
+    "messages": [
+        {
+            "message":
+            {
+                "content": "Hello from the dummy file!",
+                "username": "Dummy_1",
+                "timestamp": "1"
+            }
+        },
+        {
+            "message": {
+                "content": "I am a dummy file",
+                "username": "Dummy_2",
+                "timestamp": "2"
+            }
+        },
+        {
+            "message": {
+                "content": ";DDDDDDDDDDDDDDDD",
+                "username": "Dummy_4",
+                "timestamp": "1"
+            }
+        }
+    ]
+}

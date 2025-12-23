@@ -3,10 +3,8 @@ import type { Event } from "../../Interfaces/event.js";
 import { TextChannel, type Guild, type Message } from "discord.js";
 import GuildChatConfigRepo from "../../Repositories/guildchatconfig.js";
 import HycordChannelRepo from "../../Repositories/hycordchannel.js";
-import { decryptor, formatDate, formatTime } from "../../utility_modules/utility_methods.js";
-import axios from "axios";
+import { decryptor, formatDate, formatTime, sendMessageRequest } from "../../utility_modules/utility_methods.js";
 import HytaleConnectionRepo from "../../Repositories/hytaleconnection.js";
-import { errorLogHandle } from "../../utility_modules/error_logger.js";
 
 const messageCreate: Event = {
     name: "messageCreate",
@@ -44,21 +42,7 @@ const messageCreate: Event = {
         if (config.use_channel) messageSample += `IN #${channel.name} `;
         messageSample += `from: @${message.author.username}: ${message.content}`;
 
-        
-        try {
-            await axios.post(
-                `${host}:${port}/${endpoint}`,
-                { "message": messageSample },
-                {
-                    headers: {
-                        "Content-Type": "application/json",
-                        "Authorization": `Bearer ${hytaleConnection.secret.toString("hex")}`
-                    }
-                }
-            )
-        } catch(error) {
-            errorLogHandle(error);
-        }
+        await sendMessageRequest(host, port, endpoint, hytaleConnection.secret, messageSample);
     }
 }
 

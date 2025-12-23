@@ -6,6 +6,7 @@ import type { Collection, Snowflake } from "discord.js";
 import fs from "graceful-fs";
 import { errorLogHandle } from "./error_logger.js";;
 import crypto from "crypto";
+import axios from "axios";
 
 /**
  * 
@@ -235,4 +236,69 @@ export function decryptor(data: string): string {
     let decrypted = decipher.update(data, 'hex', 'utf8');
     decrypted += decipher.final('utf8');
     return decrypted;
+}
+
+/**
+ * 
+ * @param host Host (ex http://localhost)
+ * @param port The port of the server's endpoint (ex 3002)
+ * @param endpoint The endpoint to send messages to the server chat (ex /api/mockup/send)
+ * @param secret The secret in the hex buffer form
+ * @param message The string to be sent
+ * @returns Boolean of whether the request was successful or not
+ */
+export async function sendMessageRequest(
+    host: string,
+    port: number,
+    endpoint: string,
+    secret: Buffer,
+    message: string
+): Promise<boolean> {
+    try {
+        const response = await axios.post(
+            `${host}:${port}/${endpoint}`,
+            { 
+                "message": message 
+            },
+            {
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${secret.toString("hex")}`
+                }
+            }
+        );
+
+        if(response.status !== 200) return false;
+
+    } catch (error) {
+        errorLogHandle(error);
+        return false;
+    }
+
+    return true
+}
+
+/**
+ * 
+ * @param host Host (ex http://localhost)
+ * @param port The port of the server's endpoint (ex 3002)
+ * @param route The route to the endpoint (ex api/mockup)
+ * @param endpoint The endpoint to send messages to the server chat (ex send)
+ * @returns Boolean if the bot can reach the server's endpoint
+ */
+export async function pingServerConnection(
+    host: string,
+    port: number,
+    route: string,
+    endpoint: string
+): Promise<boolean> {
+    try {
+        const response = await axios.get(
+            `${host}:${port}/${route}/${endpoint}`,
+            { timeout: 3_000 }
+        );
+        return response.status === 200;
+    } catch {
+        return false;
+    }
 }
