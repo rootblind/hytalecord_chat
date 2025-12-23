@@ -13,6 +13,7 @@ class GuildChatConfigRepository {
      */
     async getGuildConfig(guildId: Snowflake): Promise<GuildChatConfig | null> {
         const cache = guildChatConfigCache.get(`${guildId}`);
+        
         if(cache !== undefined) return cache;
 
         const {rows: data} = await database.query(`SELECT * FROM guildchatconfig WHERE guild=$1`,
@@ -35,7 +36,7 @@ class GuildChatConfigRepository {
             }
 
             guildChatConfigCache.set(`${guildId}`, config);
-            return data[0];
+            return config;
         } else {
             guildChatConfigCache.set(`${guildId}`, null);
             return null;

@@ -84,10 +84,12 @@ And in order to set the channel where the Hytale server will send messages, use 
 /chat-config server
 ```
 
-For Bidirectional or Discord-to-Hytale communication, use
+Bidirectional and Discord-to-Hytale communication require the following command
 ```bash
 /connect
 ```
+This command will generate and register a hash version of the secret needed to validate the connection between the bot and the Hytale server.
+
 
 And to assign the channels that will communicate to Hytale, use
 ```bash
@@ -95,4 +97,13 @@ And to assign the channels that will communicate to Hytale, use
 ```
 
 A select menu will open to assign channels.
+
+#### Requests
+In order to send request to the bot, the following header parameters are required
+```json
+    "Authorization": "Bearer <your_secret_code>",
+    "X-Guild-Id": "<your_guild_id>",
+    "Content-Type": "application/json"
+```
+To access the endpoint at `/bot/`.
 ### Hytalecord mod - IN WORKING

@@ -55,6 +55,7 @@ export interface BotConfig {
 export interface HytaleConnection extends GuildTable {
     host: Buffer,
     port: number,
+    endpoint: string,
     secret: Buffer
 }
 

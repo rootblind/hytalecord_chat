@@ -23,6 +23,13 @@ const connect: ChatCommand = {
                 .setMinValue(0)
                 .setRequired(true)
         )
+        .addStringOption(option =>
+            option.setName("endpoint")
+                .setDescription("The API endpoint of the server to send messages to.")
+                .setMinLength(0)
+                .setMaxLength(255)
+                .setRequired(true)
+        )
         .toJSON()
     ,
     
@@ -36,6 +43,10 @@ const connect: ChatCommand = {
 
         const host = options.getString("host", true);
         const port = options.getNumber("port", true);
+        let endpoint = options.getString("endpoint", true);
+
+        if(endpoint.startsWith("/")) endpoint = endpoint.slice(1); // removing the first slash if given since it will be inserted
+
         /**
          * To be implemented: Check connection
          * After mockup server
@@ -44,12 +55,12 @@ const connect: ChatCommand = {
         if(checkConnection) {
             const secret = randomBytes(32).toString("hex");
             const secretHash = createHash("sha256").update(secret).digest("hex");
-            await HytaleConnectionRepo.insert(guild.id, host, port, Buffer.from(secretHash, "hex")); // register in database
+            await HytaleConnectionRepo.insert(guild.id, host, port, endpoint, Buffer.from(secretHash, "hex")); // register in database
             return await interaction.editReply({
                 embeds: [
                     embed_success(
                         "Connection successful",
-                        `**${guild.name}** is now connected to ${host}:${port}`
+                        `**${guild.name}** is now connected to ${host}:${port}/${endpoint}`
                     ).setFields({
                         name: "Your secret key",
                         value: `||${secret}||`
@@ -60,7 +71,7 @@ const connect: ChatCommand = {
             return await interaction.editReply({
                 embeds: [
                     embed_error(
-                        `Connection to ${host}:${port} failed!\nCheck spelling or if the server is accessible.`,
+                        `Connection to ${host}:${port}/${endpoint} failed!\nCheck spelling or if the server is accessible.`,
                         "Unable to connect"
                     )
                 ]

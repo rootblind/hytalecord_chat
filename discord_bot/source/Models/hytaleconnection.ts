@@ -12,6 +12,7 @@ export default async function HytaleConnection(): Promise<Result<HytaleConnectio
                 guild BIGINT NOT NULL,
                 host BYTEA NOT NULL,
                 port INT NOT NULL,
+                endpoint TEXT NOT NULL,
                 secret BYTEA NOT NULL,
                 CONSTRAINT hytaleconnection_unique_guild UNIQUE (guild)
             )`
