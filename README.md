@@ -9,7 +9,9 @@ This repository contains a Discord.js Bot that works with the mod's communicatio
 Technologies can be changed, but not with modifying the source code or the configuration.
 
 - Discord bot: Node.js, NPM, Postgresql
+
 - Mockup Server: Java 25, MVN 3.9+
+
 - Hytale mod: IN WORKING
 
 ### Discord bot
